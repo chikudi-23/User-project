@@ -1,6 +1,7 @@
+// ConsoleUI.java
 package lms;
 
-
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -24,8 +25,9 @@ public class ConsoleUI {
             System.out.println("2. Find Book by ID");
             System.out.println("3. Rent Book");
             System.out.println("4. Return Book");
-            System.out.println("5. About Us");
-            System.out.println("6. Exit");
+            System.out.println("5. List Available Books"); // New option
+            System.out.println("6. About Us");
+            System.out.println("7. Exit");
             System.out.print("Enter your choice: ");
 
             String choice = scanner.nextLine();
@@ -45,9 +47,12 @@ public class ConsoleUI {
                         returnBook();
                         break;
                     case "5":
-                        displayLibraryInfo();
+                        listAvailableBooks(); // Call the new method
                         break;
                     case "6":
+                        displayLibraryInfo();
+                        break;
+                    case "7":
                         System.out.println("Exiting system.");
                         scanner.close();
                         return;
@@ -57,6 +62,19 @@ public class ConsoleUI {
             } catch (Exception e) {
                 System.err.println("An unexpected error occurred: " + e.getMessage());
             }
+        }
+    }
+
+    private void listAvailableBooks() {
+        List<Book> availableBooks = library.getAvailableBooks();
+        if (availableBooks.isEmpty()) {
+            System.out.println("No books are currently available for renting.");
+        } else {
+            System.out.println("\n--- Available Books ---");
+            for (Book book : availableBooks) {
+                System.out.println(book); // Assuming Book.toString() is well-formatted
+            }
+            System.out.println("--- End of List ---");
         }
     }
 
@@ -92,8 +110,8 @@ public class ConsoleUI {
         try {
             copies = Integer.parseInt(copiesStr);
             if (copies <= 0) {
-            System.out.println("Number of copies must be greater than 0.");
-            return;
+                System.out.println("Number of copies must be greater than 0.");
+                return;
             }
 
         } catch (NumberFormatException e) {

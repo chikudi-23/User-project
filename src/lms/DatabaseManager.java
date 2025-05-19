@@ -1,5 +1,5 @@
+// DatabaseManager.java
 package lms;
-
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,12 +8,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseManager {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/library_db"; // Replace with your DB URL
     private static final String DB_USER = "root"; // Replace with your DB username
     private static final String DB_PASSWORD = "Sneha@12"; // Replace with your DB password
-   
+
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
@@ -108,5 +110,20 @@ public class DatabaseManager {
         } catch (SQLException e) {
             System.err.println("Error returning book: " + e.getMessage());
         }
+    }
+
+    public List<Book> getAvailableBooks() {
+        List<Book> availableBooks = new ArrayList<>();
+        String sql = "SELECT * FROM books WHERE copies_available > 0";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                availableBooks.add(new Book(rs.getInt("book_id"), rs.getString("title"), rs.getString("author"), rs.getInt("copies_available")));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving available books: " + e.getMessage());
+        }
+        return availableBooks;
     }
 }

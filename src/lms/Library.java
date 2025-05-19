@@ -1,5 +1,7 @@
+// Library.java
 package lms;
 
+import java.util.List;
 
 public class Library {
     private DatabaseManager dbManager;
@@ -35,5 +37,9 @@ public class Library {
         } else {
             System.out.println("Book with ID " + bookId + " not found.");
         }
+    }
+
+    public List<Book> getAvailableBooks() {
+        return dbManager.getAvailableBooks();
     }
 }
