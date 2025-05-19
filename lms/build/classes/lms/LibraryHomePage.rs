@@ -1,3 +1,0 @@
-HomePageUI
-LibraryHomePage
-BackgroundPanel

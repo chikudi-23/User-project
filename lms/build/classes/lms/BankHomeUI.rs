@@ -1,2 +1,0 @@
-lms.BackgroundPanel
-lms.BankHomeUI
